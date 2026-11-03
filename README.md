@@ -2,50 +2,38 @@
 
 Repositorio: https://github.com/RonaldoRS30/reto-qa-saucedemo-RONALDO-ROMAN
 
-Suite de pruebas automatizadas de extremo a extremo para [Sauce Demo](https://www.saucedemo.com/), hecha con Playwright y Cucumber (Gherkin) y organizada con el patrón Page Object Model.
+Automaticé el flujo de compra de [Sauce Demo](https://www.saucedemo.com/) con Playwright y Cucumber. Los casos están escritos en Gherkin y la interacción con la pantalla vive en Page Objects, así un cambio de selector se corrige en un solo lugar.
 
-Cubre inicio de sesión, carrito y compra hasta la confirmación, incluyendo usuario estándar, credenciales inválidas y usuario bloqueado.
+En [INFORME.md](INFORME.md) cuento por qué partí la suite así y qué decidí dejar afuera.
 
-La estrategia de automatización y los patrones usados están en [INFORME.md](INFORME.md).
+## Para correrla
 
-## Requisitos
+Hace falta Node.js 18 o superior y npm.
 
-- Node.js 18 o superior
-- npm
-
-## Instalación
-
-Desde la raíz del proyecto:
+En la raíz del proyecto:
 
 ```bash
 npm install
 npx playwright install chromium
 ```
 
-`npm install` instala Cucumber, Playwright y dotenv. El segundo comando descarga el navegador Chromium que usan los tests.
+El primero instala Cucumber, Playwright y dotenv. El segundo descarga Chromium, que es el navegador que abren los tests.
 
-## Configuración
-
-Copia el ejemplo de variables y ajústalo si hace falta:
-
-```bash
-cp .env.example .env
-```
-
-En Windows PowerShell:
+Después copia la configuración de ejemplo. En PowerShell:
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-| Variable   | Uso                                                                 |
-|------------|---------------------------------------------------------------------|
-| `BASE_URL` | Dirección de Sauce Demo. Valor esperado: `https://www.saucedemo.com/` |
-| `HEADLESS` | `true` ejecuta sin ventana. `false` muestra el navegador.          |
+En bash o Git Bash:
 
-El archivo `.env` no se sube al repositorio. `.env.example` sí, para que cualquiera pueda recrearlo.
+```bash
+cp .env.example .env
+```
 
-## Ejecución
+`BASE_URL` es la dirección de Sauce Demo (`https://www.saucedemo.com/`). Con `HEADLESS=true` los tests corren sin ventana. Si lo pones en `false`, ves el navegador mientras avanza el caso. El `.env` no se sube; el ejemplo sí, para que cualquiera pueda repetir la ejecución.
+
+## Comandos
 
 Toda la suite:
 
@@ -53,7 +41,7 @@ Toda la suite:
 npm test
 ```
 
-Por flujo:
+Un flujo completo:
 
 ```bash
 npm run test:smoke
@@ -62,7 +50,7 @@ npm run test:carrito
 npm run test:checkout
 ```
 
-Por escenario:
+Un solo escenario, cuando estoy revisando un fallo puntual:
 
 ```bash
 npm run test:login-exitoso
@@ -75,34 +63,29 @@ npm run test:checkout-exitoso
 npm run test:checkout-error
 ```
 
-## Escenarios
+## Qué prueba cada feature
 
-| Feature | Qué valida |
-|---------|------------|
-| `features/login.feature` | Login correcto, credenciales inválidas y usuario bloqueado |
-| `features/compra.feature` | Agregar un producto, verlo en el carrito y eliminarlo |
-| `features/checkout.feature` | Compra completa y error al continuar sin datos obligatorios |
+`features/login.feature` entra con el usuario estándar, rechaza una clave incorrecta y también al usuario bloqueado.
 
-## Usuarios de prueba
+`features/compra.feature` agrega Sauce Labs Backpack, lo busca en el carrito y después lo elimina.
 
-Sauce Demo publica estas cuentas. La contraseña de ambas es `secret_sauce`.
+`features/checkout.feature` termina la compra hasta el mensaje de agradecimiento, y también intenta seguir sin llenar el formulario.
 
-| Usuario           | Resultado esperado                          |
-|-------------------|---------------------------------------------|
-| `standard_user`   | Entra al inventario y puede comprar         |
-| `locked_out_user` | No entra. Muestra que el usuario está bloqueado |
+## Usuarios
 
-## Estructura
+Sauce Demo publica estas cuentas. Las dos usan la contraseña `secret_sauce`.
+
+`standard_user` entra al inventario y puede comprar. `locked_out_user` se queda en el login y la página avisa que la cuenta está bloqueada.
+
+Los dejé escritos en los features porque el reto los fija y el escenario se lee solo. La URL y el modo headless sí salen del `.env`, porque cambian según la máquina.
+
+## Cómo está el código
 
 ```text
-features/                  Escenarios en Gherkin
-src/pages/                 Page Objects (localizadores y acciones)
-src/step-definitions/      Steps que conectan Gherkin con las páginas
-support/world.js           World de Cucumber y carga de .env
-support/hooks.js           Abre y cierra el navegador en cada escenario
-.env.example               Plantilla de configuración
+features/                  escenarios en Gherkin
+src/pages/                 una clase por pantalla
+src/step-definitions/      unen el Gherkin con las páginas
+support/world.js           carga el .env y prepara el World de Cucumber
+support/hooks.js           abre y cierra el navegador en cada escenario
+.env.example               plantilla de configuración
 ```
-
-## Credenciales y datos
-
-Los usuarios van escritos en los features, porque el reto los fija. La URL y el modo headless salen de `.env`, para no dejar la dirección de la aplicación hardcodeada en el código.
