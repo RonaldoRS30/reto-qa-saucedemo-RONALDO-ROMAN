@@ -1,0 +1,29 @@
+{
+  "name": "reto-qa-saucedemo",
+  "version": "1.0.0",
+  "description": "Suite de pruebas automatizadas de Sauce Demo con Playwright y Cucumber",
+  "main": "index.js",
+  "scripts": {
+    "test": "cucumber-js --require support/world.js --require support/hooks.js --require src/step-definitions/*.js",
+    "test:login": "npm test -- --tags @login",
+    "test:smoke": "npm test -- --tags @smoke",
+    "test:login-exitoso": "npm test -- --tags @login_exitoso",
+    "test:login-invalid": "npm test -- --tags @login_credenciales_invalidas",
+    "test:login-bloqueado": "npm test -- --tags @login_usuario_bloqueado",
+    "test:carrito": "npm test -- --tags @carrito",
+    "test:carrito-agregar": "npm test -- --tags @carrito_agregar_producto",
+    "test:carrito-visualizar": "npm test -- --tags @carrito_visualizar_productos",
+    "test:carrito-eliminar": "npm test -- --tags @carrito_eliminar_producto",
+    "test:checkout": "npm test -- --tags @checkout",
+    "test:checkout-exitoso": "npm test -- --tags @checkout_exitoso",
+    "test:checkout-error": "npm test -- --tags @checkout_datos_incompletos"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@cucumber/cucumber": "^13.3.0",
+    "@playwright/test": "^1.64.1",
+    "dotenv": "^18.0.9"
+  }
+}
