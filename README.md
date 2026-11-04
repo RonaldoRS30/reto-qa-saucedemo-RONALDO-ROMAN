@@ -2,9 +2,8 @@
 
 Repositorio: https://github.com/RonaldoRS30/reto-qa-saucedemo-RONALDO-ROMAN
 
-Automaticé el flujo de compra de [Sauce Demo](https://www.saucedemo.com/) con Playwright y Cucumber. Los casos están escritos en Gherkin y las páginas en TypeScript, con Page Object Model. Cucumber no ejecuta `.ts` solo: `config/cucumber.js` le pasa `ts-node`, que traduce ese código al correr.
+Automaticé el flujo de compra de [Sauce Demo](https://www.saucedemo.com/) con Playwright y Cucumber. Los casos están escritos en Gherkin y las páginas en TypeScript, con Page Object Model. 
 
-En [INFORME.md](INFORME.md) cuento por qué partí la suite así y qué decidí dejar afuera.
 
 ## Para correrla
 
@@ -19,17 +18,6 @@ npx playwright install chromium
 
 El primero instala Cucumber, Playwright, TypeScript, ts-node y dotenv. El segundo descarga Chromium, que es el navegador que abren los tests.
 
-Después copia la configuración de ejemplo. En PowerShell:
-
-```powershell
-Copy-Item .env.example .env
-```
-
-En bash o Git Bash:
-
-```bash
-cp .env.example .env
-```
 
 `BASE_URL` es la dirección de Sauce Demo (`https://www.saucedemo.com/`). Con `HEADLESS=true` los tests corren sin ventana. Si lo pones en `false`, ves el navegador mientras avanza el caso. El `.env` no se sube; el ejemplo sí, para que cualquiera pueda repetir la ejecución.
 
@@ -41,10 +29,11 @@ Toda la suite:
 npm test
 ```
 
-Un flujo completo:
+Smoke es el camino feliz de cada flujo: login, agregar al carrito y compra. Regresión son los casos que comprueban que lo demás sigue en pie: accesos rechazados, ver y quitar el producto, y el formulario incompleto.
 
 ```bash
 npm run test:smoke
+npm run test:regresion
 npm run test:login
 npm run test:carrito
 npm run test:checkout
@@ -59,18 +48,7 @@ npm run allure-open
 
 Eso necesita Java instalado, porque el visor de Allure corre sobre Java. Esas carpetas no se suben al repositorio: se regeneran cada vez que corres la suite.
 
-Un solo escenario, cuando estoy revisando un fallo puntual:
-
-```bash
-npm run test:login-exitoso
-npm run test:login-invalid
-npm run test:login-bloqueado
-npm run test:carrito-agregar
-npm run test:carrito-visualizar
-npm run test:carrito-eliminar
-npm run test:checkout-exitoso
-npm run test:checkout-error
-```
+En GitHub Actions la suite corre sola en cada push o pull request a `main`. El workflow instala Node y Chromium, ejecuta `npm test` en headless y deja el reporte de Allure como artefacto descargable en la pestaña Actions. También se puede lanzar a mano con Run workflow.
 
 ## Qué prueba cada feature
 

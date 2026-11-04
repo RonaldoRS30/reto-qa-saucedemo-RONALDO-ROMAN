@@ -1,0 +1,59 @@
+name: Pruebas Sauce Demo
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  pruebas:
+    name: Cucumber en Chromium
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      BASE_URL: https://www.saucedemo.com/
+      HEADLESS: "true"
+
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Instalar Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Ejecutar la suite
+        run: npm test
+
+      - name: Configurar Java
+        if: always()
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Generar reporte Allure
+        if: always()
+        run: npm run allure-generate
+
+      - name: Publicar el reporte
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: |
+            allure-results/
+            allure-report/
+          if-no-files-found: warn
+          retention-days: 7

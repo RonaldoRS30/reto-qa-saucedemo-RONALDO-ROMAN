@@ -17,6 +17,8 @@ Al lado del camino feliz dejé los casos que tienen que fallar. Un login que sie
 
 Dejé afuera ordenar el inventario, comprar varios productos distintos y el logout. El camino de compra y los rechazos de acceso ya cubren lo que pide el reto, y preferí afirmar bien esos casos antes de abrir más escenarios.
 
+Los tags no se repiten en cada escenario. `@login`, `@carrito` y `@checkout` van una vez en el feature. `@smoke` marca el camino feliz de cada flujo, el que corro cuando quiero saber rápido si la app responde. `@regresion` marca el resto: credenciales inválidas, usuario bloqueado, ver y quitar el producto, y el checkout sin datos. Correr todo sigue siendo `npm test`. En GitHub Actions eso ocurre solo, en cada push a `main`: el workflow abre Chromium en headless contra Sauce Demo y guarda el reporte de Allure. No hay despliegue, porque esta suite no publica una aplicación; la integración continua comprueba que los escenarios siguen pasando.
+
 ## Por qué Playwright con Cucumber
 
 Playwright abre Chromium, espera los elementos y hace las comprobaciones. Cucumber se queda con el lenguaje del caso. Las páginas y los steps están en TypeScript para anotar la página, los localizadores y los argumentos que llegan del Gherkin. Cucumber sigue arrancando desde `config/cucumber.js`, y `ts-node` traduce los `.ts` en el momento de la ejecución. Los pasos están en español y dicen lo que haría el usuario: agregar el producto, ver el mensaje, confirmar la compra. Para entender un escenario alcanza con leer el feature.
