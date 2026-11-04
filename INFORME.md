@@ -1,50 +1,40 @@
 # Cómo armé esta automatización
 
-El reto pide que un cliente de Sauce Demo pueda entrar, agregar un producto y terminar la compra. Lo tomé como un flujo de punta a punta y lo partí en tres features: login, carrito y checkout. Cada archivo se lee como una historia corta, y si algo falla sé en qué tramo del negocio está.
+Sauce Demo: https://www.saucedemo.com/
 
-La aplicación es https://www.saucedemo.com/.
+El flujo es entrar, agregar un producto y terminar la compra. Lo partí en tres features: `login`, `compra` y `checkout`.
 
 ## Qué cubrí
 
-Con `standard_user` y `secret_sauce` el usuario entra, agrega Sauce Labs Backpack, lo ve en el carrito y llega hasta `Thank you for your order!`.
+Camino feliz, tag `@smoke`: login con `standard_user` / `secret_sauce`, agregar Sauce Labs Backpack y compra hasta `Thank you for your order!`.
 
-Al lado del camino feliz dejé los casos que tienen que fallar. Un login que siempre pasa no me dice si la suite distingue un error de un éxito:
+Regresión, tag `@regresion`: clave inválida, `locked_out_user`, ver el producto en el carrito, quitarlo y checkout sin nombre.
 
-- una clave que no existe
-- `locked_out_user`, que Sauce Demo rechaza a propósito
-- el checkout sin nombre, para ver que el formulario frena
-- quitar el producto y comprobar que el carrito queda vacío
+`@login`, `@carrito` y `@checkout` van una sola vez, arriba de cada feature.
 
-Dejé afuera ordenar el inventario, comprar varios productos distintos y el logout. El camino de compra y los rechazos de acceso ya cubren lo que pide el reto, y preferí afirmar bien esos casos antes de abrir más escenarios.
+Quedó afuera ordenar el inventario, comprar varios productos y el logout.
 
-Los tags no se repiten en cada escenario. `@login`, `@carrito` y `@checkout` van una vez en el feature. `@smoke` marca el camino feliz de cada flujo, el que corro cuando quiero saber rápido si la app responde. `@regresion` marca el resto: credenciales inválidas, usuario bloqueado, ver y quitar el producto, y el checkout sin datos. Correr todo sigue siendo `npm test`. En GitHub Actions eso ocurre solo, en cada push a `main`: el workflow abre Chromium en headless contra Sauce Demo y guarda el reporte de Allure. No hay despliegue, porque esta suite no publica una aplicación; la integración continua comprueba que los escenarios siguen pasando.
+## Herramientas
 
-## Por qué Playwright con Cucumber
-
-Playwright abre Chromium, espera los elementos y hace las comprobaciones. Cucumber se queda con el lenguaje del caso. Las páginas y los steps están en TypeScript para anotar la página, los localizadores y los argumentos que llegan del Gherkin. Cucumber sigue arrancando desde `config/cucumber.js`, y `ts-node` traduce los `.ts` en el momento de la ejecución. Los pasos están en español y dicen lo que haría el usuario: agregar el producto, ver el mensaje, confirmar la compra. Para entender un escenario alcanza con leer el feature.
-
-Cada caso abre su propio navegador en `support/hooks.ts` y lo cierra al terminar. El carrito o la sesión de uno no se le pasan al siguiente. Si un paso se queda colgado, corta a los 30 segundos.
-
-La URL y si el navegador se muestra salen de `.env`. Los usuarios los escribí en el feature: el reto los define y quiero que el caso se entienda sin abrir otro archivo.
+- Playwright abre Chromium y hace las comprobaciones.
+- Cucumber ejecuta el Gherkin. Los pasos están en español.
+- TypeScript en páginas y steps. `config/cucumber.js` los carga con `ts-node`.
+- Cada escenario abre y cierra su navegador en `support/hooks.ts`. El tiempo máximo de un paso es 30 segundos.
+- La URL y `HEADLESS` salen de `.env`. Los usuarios están escritos en el feature.
+- GitHub Actions corre `npm test` en cada push a `main` y guarda el reporte de Allure. No hay despliegue.
 
 ## Page Object Model
 
-Cada pantalla tiene su clase en `src/pages/`: login, productos, carrito, datos del comprador, resumen y confirmación.
+Una clase por pantalla en `src/pages/`: login, productos, carrito, datos, resumen y confirmación.
 
-Ahí están los localizadores y las acciones con nombre claro: `login`, `addProductToCart`, `fillInformation`, `finishOrder`. Los steps llaman a esos métodos y revisan el resultado. Si cambia el id de un botón, lo corrijo en la página y los features siguen igual.
+La clase guarda los localizadores y las acciones (`login`, `addProductToCart`, `fillInformation`, `finishOrder`). Los steps solo las llaman. Un cambio de selector se corrige en la página.
 
-Me sirvió sobre todo en el checkout, que cruza tres pantallas. Si los selectores hubieran quedado en los steps, `checkout.steps.js` se volvería difícil de seguir.
+## Qué afirma cada caso
 
-## Cómo decido que el caso pasó
+- Login correcto: el título es `Products`.
+- Login fallido: el mensaje contiene el texto de Sauce Demo.
+- Carrito: el contador queda en `1`, el nombre aparece y, al quitarlo, la lista queda en cero.
+- Compra: el resumen muestra el producto, subtotal, impuesto y total, y cierra con `Thank you for your order!`.
+- Datos incompletos: `Error: First Name is required`.
 
-Reviso en qué estado quedó la pantalla:
-
-- Si el login es correcto, el título dice `Products`.
-- Si falla, el mensaje trae el texto de Sauce Demo, sea por credenciales o porque el usuario está bloqueado.
-- En el carrito, el contador marca `1`, aparece el nombre del producto y, al quitarlo, la lista queda en cero.
-- En la compra, el resumen sigue mostrando el producto, se ven subtotal, impuesto y total, y al final aparece `Thank you for your order!`.
-- Si faltan los datos, seguir adelante muestra `Error: First Name is required`.
-
-## Para ejecutarla
-
-Los comandos están en [README.md](README.md). Con `npm test` corre la suite completa.
+Los comandos están en [README.md](README.md).
