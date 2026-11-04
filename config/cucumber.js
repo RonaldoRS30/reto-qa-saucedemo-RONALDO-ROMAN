@@ -7,8 +7,14 @@ module.exports = {
             'src/step-definitions/**/*.ts'
         ],
         requireModule: ['ts-node/register'],
+        format: [
+            'progress',
+            'summary',
+            'allure-cucumberjs/reporter'
+        ],
         formatOptions: {
-            snippetInterface: 'async-await'
+            snippetInterface: 'async-await',
+            resultsDir: 'allure-results'
         }
     }
 };

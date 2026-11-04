@@ -1,4 +1,4 @@
-import { After, Before, setDefaultTimeout } from '@cucumber/cucumber';
+import { After, Before, ITestCaseHookParameter, setDefaultTimeout, Status } from '@cucumber/cucumber';
 import { chromium } from '@playwright/test';
 import { CustomWorld } from './world';
 
@@ -13,7 +13,12 @@ Before(async function (this: CustomWorld) {
     this.page = await this.context.newPage();
 });
 
-After(async function (this: CustomWorld) {
+After(async function (this: CustomWorld, scenario: ITestCaseHookParameter) {
+    if (scenario.result?.status === Status.FAILED && this.page) {
+        const image = await this.page.screenshot({ fullPage: true });
+        await this.attach(image, 'image/png');
+    }
+
     await this.page?.close();
     await this.context?.close();
     await this.browser?.close();

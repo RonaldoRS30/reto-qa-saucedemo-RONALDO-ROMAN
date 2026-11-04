@@ -50,6 +50,15 @@ npm run test:carrito
 npm run test:checkout
 ```
 
+El reporte de Allure se arma después de una ejecución. `npm test` escribe la carpeta `allure-results`. Para verla en el navegador:
+
+```bash
+npm run allure-generate
+npm run allure-open
+```
+
+Eso necesita Java instalado, porque el visor de Allure corre sobre Java. Esas carpetas no se suben al repositorio: se regeneran cada vez que corres la suite.
+
 Un solo escenario, cuando estoy revisando un fallo puntual:
 
 ```bash
