@@ -19,9 +19,9 @@ Dejé afuera ordenar el inventario, comprar varios productos distintos y el logo
 
 ## Por qué Playwright con Cucumber
 
-Playwright abre Chromium, espera los elementos y hace las comprobaciones. Cucumber se queda con el lenguaje del caso. Los pasos están en español y dicen lo que haría el usuario: agregar el producto, ver el mensaje, confirmar la compra. Para entender un escenario alcanza con leer el feature.
+Playwright abre Chromium, espera los elementos y hace las comprobaciones. Cucumber se queda con el lenguaje del caso. Las páginas y los steps están en TypeScript para anotar la página, los localizadores y los argumentos que llegan del Gherkin. Cucumber sigue arrancando desde `config/cucumber.js`, y `ts-node` traduce los `.ts` en el momento de la ejecución. Los pasos están en español y dicen lo que haría el usuario: agregar el producto, ver el mensaje, confirmar la compra. Para entender un escenario alcanza con leer el feature.
 
-Cada caso abre su propio navegador en `support/hooks.js` y lo cierra al terminar. El carrito o la sesión de uno no se le pasan al siguiente. Si un paso se queda colgado, corta a los 30 segundos.
+Cada caso abre su propio navegador en `support/hooks.ts` y lo cierra al terminar. El carrito o la sesión de uno no se le pasan al siguiente. Si un paso se queda colgado, corta a los 30 segundos.
 
 La URL y si el navegador se muestra salen de `.env`. Los usuarios los escribí en el feature: el reto los define y quiero que el caso se entienda sin abrir otro archivo.
 

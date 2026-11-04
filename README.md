@@ -2,7 +2,7 @@
 
 Repositorio: https://github.com/RonaldoRS30/reto-qa-saucedemo-RONALDO-ROMAN
 
-Automaticé el flujo de compra de [Sauce Demo](https://www.saucedemo.com/) con Playwright y Cucumber. Los casos están escritos en Gherkin y la interacción con la pantalla vive en Page Objects, así un cambio de selector se corrige en un solo lugar.
+Automaticé el flujo de compra de [Sauce Demo](https://www.saucedemo.com/) con Playwright y Cucumber. Los casos están escritos en Gherkin y las páginas en TypeScript, con Page Object Model. Cucumber no ejecuta `.ts` solo: `config/cucumber.js` le pasa `ts-node`, que traduce ese código al correr.
 
 En [INFORME.md](INFORME.md) cuento por qué partí la suite así y qué decidí dejar afuera.
 
@@ -17,7 +17,7 @@ npm install
 npx playwright install chromium
 ```
 
-El primero instala Cucumber, Playwright y dotenv. El segundo descarga Chromium, que es el navegador que abren los tests.
+El primero instala Cucumber, Playwright, TypeScript, ts-node y dotenv. El segundo descarga Chromium, que es el navegador que abren los tests.
 
 Después copia la configuración de ejemplo. En PowerShell:
 
@@ -83,9 +83,10 @@ Los dejé escritos en los features porque el reto los fija y el escenario se lee
 
 ```text
 features/                  escenarios en Gherkin
-src/pages/                 una clase por pantalla
+src/pages/                 una clase por pantalla, en TypeScript
 src/step-definitions/      unen el Gherkin con las páginas
-support/world.js           carga el .env y prepara el World de Cucumber
-support/hooks.js           abre y cierra el navegador en cada escenario
+support/world.ts           carga el .env y prepara el World de Cucumber
+support/hooks.ts           abre y cierra el navegador en cada escenario
+config/cucumber.js         le dice a Cucumber que traduzca los .ts con ts-node
 .env.example               plantilla de configuración
 ```

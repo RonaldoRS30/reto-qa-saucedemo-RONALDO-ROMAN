@@ -1,54 +1,38 @@
+import { expect, Locator, Page } from '@playwright/test';
 
-const { expect } = require('@playwright/test');
+export default class CheckoutPage {
+    private readonly page: Page;
 
-class CheckoutPage {
+    private readonly firstNameInput: Locator;
+    private readonly lastNameInput: Locator;
+    private readonly postalCodeInput: Locator;
+    private readonly continueButton: Locator;
+    private readonly errorMessage: Locator;
 
-    constructor(page) {
+    constructor(page: Page) {
         this.page = page;
-
-        // Localizadores del formulario de checkout
         this.firstNameInput = page.locator('#first-name');
         this.lastNameInput = page.locator('#last-name');
         this.postalCodeInput = page.locator('#postal-code');
-
-        // Botones y mensajes
         this.continueButton = page.locator('#continue');
         this.errorMessage = page.locator('[data-test="error"]');
-        this.pageTitle = page.locator('[data-test="title"]');
     }
 
-    // Completar los datos del comprador
-    async fillInformation(firstName, lastName, postalCode) {
-
+    async fillInformation(firstName: string, lastName: string, postalCode: string): Promise<void> {
         await this.firstNameInput.fill(firstName);
-
         await this.lastNameInput.fill(lastName);
-
         await this.postalCodeInput.fill(postalCode);
-
     }
 
-    // Continuar al resumen de compra
-    async continueToOverview() {
-
+    async continueToOverview(): Promise<void> {
         await this.continueButton.click();
-
     }
 
-    // Continuar sin completar los datos
-    async continueWithoutInformation() {
-
+    async continueWithoutInformation(): Promise<void> {
         await this.continueButton.click();
-
     }
 
-    // Validar el mensaje de error
-    async verifyErrorMessage(expectedMessage) {
-
+    async verifyErrorMessage(expectedMessage: string): Promise<void> {
         await expect(this.errorMessage).toContainText(expectedMessage);
-
     }
-
 }
-
-module.exports = CheckoutPage;

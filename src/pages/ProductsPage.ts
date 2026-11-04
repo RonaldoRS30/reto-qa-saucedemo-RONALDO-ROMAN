@@ -1,25 +1,26 @@
+import { expect, Locator, Page } from '@playwright/test';
 
-const { expect } = require('@playwright/test');
+export default class ProductsPage {
+    private readonly page: Page;
 
-class ProductsPage {
+    private readonly inventoryItems: Locator;
+    readonly cartBadge: Locator;
+    private readonly cartLink: Locator;
+    private readonly pageTitle: Locator;
 
-    constructor(page) {
+    constructor(page: Page) {
         this.page = page;
-
-        // Localizadores de los elementos de la página
         this.inventoryItems = page.locator('.inventory_item');
         this.cartBadge = page.locator('.shopping_cart_badge');
         this.cartLink = page.locator('.shopping_cart_link');
         this.pageTitle = page.locator('[data-test="title"]');
     }
 
-    // Validar que estamos en la página de productos
-    async verifyProductsPage() {
+    async verifyProductsPage(): Promise<void> {
         await expect(this.pageTitle).toHaveText('Products');
     }
 
-    // Agregar un producto al carrito por su nombre
-    async addProductToCart(productName) {
+    async addProductToCart(productName: string): Promise<void> {
         const product = this.inventoryItems.filter({
             hasText: productName
         });
@@ -27,10 +28,7 @@ class ProductsPage {
         await product.locator('button').click();
     }
 
-    // Abrir el carrito de compras
-    async openCart() {
+    async openCart(): Promise<void> {
         await this.cartLink.click();
     }
 }
-
-module.exports = ProductsPage;

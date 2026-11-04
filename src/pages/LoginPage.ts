@@ -1,54 +1,39 @@
+import { Locator, Page } from '@playwright/test';
 
-class LoginPage {
+export default class LoginPage {
+    private readonly page: Page;
+    private readonly baseUrl: string;
 
-    constructor(page, baseUrl) {
+    private readonly usernameInput: Locator;
+    private readonly passwordInput: Locator;
+    private readonly loginButton: Locator;
+    readonly errorMessage: Locator;
 
+    constructor(page: Page, baseUrl: string) {
         this.page = page;
         this.baseUrl = baseUrl;
 
-        // Localizadores de los elementos
         this.usernameInput = page.locator('#user-name');
         this.passwordInput = page.locator('#password');
         this.loginButton = page.locator('#login-button');
-
-        // Mensaje de error
         this.errorMessage = page.locator('[data-test="error"]');
-        
-
     }
 
-    // Abrir la página de inicio de sesión
-    async navigate() {
-
+    async navigate(): Promise<void> {
         await this.page.goto(this.baseUrl);
-
     }
 
-    // Ingresar las credenciales
-    async enterCredentials(username, password) {
-
+    async enterCredentials(username: string, password: string): Promise<void> {
         await this.usernameInput.fill(username);
-
         await this.passwordInput.fill(password);
-
     }
 
-    // Presionar el botón Login
-    async clickLogin() {
-
+    async clickLogin(): Promise<void> {
         await this.loginButton.click();
-
     }
 
-    // Método que permite iniciar sesión realizando ambas acciones
-    async login(username, password) {
-
+    async login(username: string, password: string): Promise<void> {
         await this.enterCredentials(username, password);
-
         await this.clickLogin();
-
     }
-
 }
-
-module.exports = LoginPage;
