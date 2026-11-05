@@ -9,7 +9,8 @@ Given('que el usuario está en la página de inicio de sesión', async function 
 });
 
 When('ingresa el usuario {string} y la contraseña {string}', async function (this: CustomWorld, username: string, password: string) {
-    await this.loginPage!.enterCredentials(username, password);
+    const clave = password === 'configurada' ? this.saucePassword() : password;
+    await this.loginPage!.enterCredentials(username, clave);
 });
 
 When('ingresa el usuario {string} y la contraseña configurada', async function (this: CustomWorld, username: string) {

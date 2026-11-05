@@ -6,9 +6,9 @@ El flujo es entrar, agregar un producto y terminar la compra. Lo partí en tres 
 
 ## Qué cubrí
 
-Camino feliz, tag `@smoke`: login con `standard_user` / `secret_sauce`, agregar Sauce Labs Backpack y compra hasta `Thank you for your order!`.
+Camino feliz, tag `@smoke`: login con `standard_user` y la contraseña de `SAUCE_PASSWORD`, agregar Sauce Labs Backpack y compra hasta `Thank you for your order!`.
 
-Regresión, tag `@regresion`: clave inválida, `locked_out_user`, ver el producto en el carrito, quitarlo y checkout sin nombre.
+Regresión, tag `@regresion`: un Scenario Outline de login (clave inválida, usuario bloqueado, usuario vacío y clave vacía), ver el producto en el carrito, quitarlo y checkout sin nombre.
 
 `@login`, `@carrito` y `@checkout` van una sola vez, arriba de cada feature.
 

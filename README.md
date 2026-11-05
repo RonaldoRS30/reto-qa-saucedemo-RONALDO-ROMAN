@@ -31,9 +31,9 @@ cp .env.example .env
 
 | Comando | Qué corre |
 |---|---|
-| `npm test` | Los 8 escenarios |
+| `npm test` | Los 10 escenarios |
 | `npm run test:smoke` | Login exitoso, agregar al carrito y compra completa |
-| `npm run test:regresion` | Credenciales inválidas, usuario bloqueado, ver el carrito, quitar el producto y checkout sin datos |
+| `npm run test:regresion` | Login fallido (clave inválida, usuario bloqueado, usuario vacío y clave vacía), ver el carrito, quitar el producto y checkout sin datos |
 | `npm run test:login` | Solo `features/login.feature` |
 | `npm run test:carrito` | Solo `features/compra.feature` |
 | `npm run test:checkout` | Solo `features/checkout.feature` |

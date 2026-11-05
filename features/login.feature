@@ -9,15 +9,15 @@ Feature: Inicio de sesión en Sauce Demo
     Then debería visualizar la página de productos
 
   @regresion
-  Scenario: Inicio de sesión fallido con credenciales incorrectas
+  Scenario Outline: Inicio de sesión fallido - <caso>
     Given que el usuario está en la página de inicio de sesión
-    When ingresa el usuario "usuario_invalido" y la contraseña "password_incorrecta"
+    When ingresa el usuario "<usuario>" y la contraseña "<clave>"
     And presiona el botón de inicio de sesión
-    Then debería visualizar el mensaje de error "Username and password do not match"
+    Then debería visualizar el mensaje de error "<mensaje>"
 
-  @regresion
-  Scenario: Inicio de sesión fallido con usuario bloqueado
-    Given que el usuario está en la página de inicio de sesión
-    When ingresa el usuario "locked_out_user" y la contraseña configurada
-    And presiona el botón de inicio de sesión
-    Then debería visualizar el mensaje de error "Sorry, this user has been locked out"
+    Examples:
+      | caso               | usuario          | clave               | mensaje                              |
+      | credenciales malas | usuario_invalido | password_incorrecta | Username and password do not match   |
+      | usuario bloqueado  | locked_out_user  | configurada         | Sorry, this user has been locked out |
+      | usuario vacio      |                  | configurada         | Username is required                 |
+      | clave vacia        | standard_user    |                     | Password is required                 |
