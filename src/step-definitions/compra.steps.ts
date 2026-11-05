@@ -24,6 +24,7 @@ Given('que el usuario inicia sesión con {string} y la contraseña configurada',
 });
 
 When('agrega el producto {string} al carrito', async function (this: CustomWorld, productName: string) {
+    this.productName = productName;
     await this.productsPage!.addProductToCart(productName);
 });
 

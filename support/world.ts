@@ -22,6 +22,7 @@ export class CustomWorld extends World {
     checkoutPage?: CheckoutPage;
     checkoutOverviewPage?: CheckoutOverviewPage;
     checkoutCompletePage?: CheckoutCompletePage;
+    productName?: string;
 
     constructor(options: IWorldOptions) {
         super(options);

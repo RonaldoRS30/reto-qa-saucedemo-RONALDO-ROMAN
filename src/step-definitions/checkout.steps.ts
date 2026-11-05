@@ -31,7 +31,7 @@ Then('debería visualizar el error de checkout {string}', async function (this: 
 });
 
 When('confirma la compra', async function (this: CustomWorld) {
-    await this.checkoutOverviewPage!.verifyProduct('Sauce Labs Backpack');
+    await this.checkoutOverviewPage!.verifyProduct(this.productName!);
     await this.checkoutOverviewPage!.verifyPurchaseAmounts();
     await this.checkoutOverviewPage!.finishOrder();
     this.checkoutCompletePage = new CheckoutCompletePage(this.page);
