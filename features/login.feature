@@ -16,8 +16,14 @@ Feature: Inicio de sesión en Sauce Demo
     Then debería visualizar el mensaje de error "<mensaje>"
 
     Examples:
-      | caso               | usuario          | clave               | mensaje                              |
-      | credenciales malas | usuario_invalido | password_incorrecta | Username and password do not match   |
-      | usuario bloqueado  | locked_out_user  | configurada         | Sorry, this user has been locked out |
-      | usuario vacio      |                  | configurada         | Username is required                 |
-      | clave vacia        | standard_user    |                     | Password is required                 |
+      | caso              | usuario          | clave               | mensaje                              |
+      | cred. incorrectas | usuario_invalido | password_incorrecta | Username and password do not match   |
+      | clave incorrecta  | standard_user    | clave_mala          | Username and password do not match   |
+      | usuario bloqueado | locked_out_user  | configurada         | Sorry, this user has been locked out |
+      | usuario vacío     |                  | configurada         | Username is required                 |
+      | clave vacía       | standard_user    |                     | Password is required                 |
+
+  @regresion
+  Scenario: Login negativo con datos desde CSV
+    Given que el usuario está en la página de inicio de sesión
+    When intenta iniciar sesión con cada caso del archivo "login-negativo.csv"

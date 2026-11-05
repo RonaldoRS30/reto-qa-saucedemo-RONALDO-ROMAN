@@ -1,6 +1,7 @@
 import { Given, Then, When } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
 import LoginPage from '../pages/LoginPage';
+import { leerCsv } from '../../support/csv';
 import { CustomWorld } from '../../support/world';
 
 Given('que el usuario está en la página de inicio de sesión', async function (this: CustomWorld) {
@@ -15,6 +16,15 @@ When('ingresa el usuario {string} y la contraseña {string}', async function (th
 
 When('ingresa el usuario {string} y la contraseña configurada', async function (this: CustomWorld, username: string) {
     await this.loginPage!.enterCredentials(username, this.saucePassword());
+});
+
+When('intenta iniciar sesión con cada caso del archivo {string}', async function (this: CustomWorld, archivo: string) {
+    for (const caso of leerCsv(archivo)) {
+        const clave = caso.clave === 'configurada' ? this.saucePassword() : caso.clave;
+        await this.loginPage!.navigate();
+        await this.loginPage!.login(caso.usuario, clave);
+        await expect(this.loginPage!.errorMessage).toContainText(caso.mensaje);
+    }
 });
 
 When('presiona el botón de inicio de sesión', async function (this: CustomWorld) {

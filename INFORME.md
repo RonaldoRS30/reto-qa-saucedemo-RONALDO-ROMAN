@@ -8,7 +8,7 @@ El flujo es entrar, agregar un producto y terminar la compra. Lo partí en tres 
 
 Camino feliz, tag `@smoke`: login con `standard_user` y la contraseña de `SAUCE_PASSWORD`, agregar Sauce Labs Backpack y compra hasta `Thank you for your order!`.
 
-Regresión, tag `@regresion`: un Scenario Outline de login (clave inválida, usuario bloqueado, usuario vacío y clave vacía), ver el producto en el carrito, quitarlo y checkout sin nombre.
+Regresión, tag `@regresion`: un Scenario Outline de login y el mismo conjunto leído desde `data/login-negativo.csv`, más ver el carrito, quitar el producto y checkout sin nombre. El usuario bloqueado sigue en el outline porque el reto lo pide.
 
 `@login`, `@carrito` y `@checkout` van una sola vez, arriba de cada feature.
 

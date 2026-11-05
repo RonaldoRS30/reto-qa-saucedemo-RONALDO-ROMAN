@@ -1,0 +1,5 @@
+usuario,clave,mensaje
+usuario_invalido,password_incorrecta,Username and password do not match
+standard_user,clave_mala,Username and password do not match
+,configurada,Username is required
+standard_user,,Password is required
