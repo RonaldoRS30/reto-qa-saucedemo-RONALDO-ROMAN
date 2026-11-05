@@ -19,7 +19,7 @@ Quedó afuera ordenar el inventario, comprar varios productos y el logout.
 - Playwright abre Chromium y hace las comprobaciones.
 - Cucumber ejecuta el Gherkin. Los pasos están en español.
 - TypeScript en páginas y steps. `config/cucumber.js` los carga con `ts-node`.
-- Cada escenario abre y cierra su navegador en `support/hooks.ts`. El tiempo máximo de un paso es 30 segundos.
+- Cada escenario abre y cierra su navegador en `support/hooks.ts` y adjunta la captura final al reporte. Si falla, el trace queda en `evidencias/`. El tiempo máximo de un paso es 30 segundos.
 - La URL y `HEADLESS` salen de `.env`. Los usuarios están escritos en el feature.
 - GitHub Actions corre `npm test` en cada push a `main` y guarda el reporte de Allure. No hay despliegue.
 
