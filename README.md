@@ -40,14 +40,19 @@ cp .env.example .env
 
 ## Allure
 
-Hace falta Java. `npm test` deja los resultados en `allure-results`.
+Hace falta Java. El reporte de la última ejecución ya está en el repositorio. Para abrirlo:
 
 ```bash
-npm run allure-generate
 npm run allure-open
 ```
 
-Esas carpetas no se suben. Se vuelven a crear en cada ejecución.
+Si acabas de correr la suite, regenera antes de abrir:
+
+```bash
+npm test
+npm run allure-generate
+npm run allure-open
+```
 
 ## CI
 
