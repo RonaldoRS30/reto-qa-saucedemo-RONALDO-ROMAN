@@ -4,7 +4,7 @@ Feature: Inicio de sesión en Sauce Demo
   @smoke
   Scenario: Inicio de sesión exitoso con usuario estándar
     Given que el usuario está en la página de inicio de sesión
-    When ingresa el usuario "standard_user" y la contraseña "secret_sauce"
+    When ingresa el usuario "standard_user" y la contraseña configurada
     And presiona el botón de inicio de sesión
     Then debería visualizar la página de productos
 
@@ -18,6 +18,6 @@ Feature: Inicio de sesión en Sauce Demo
   @regresion
   Scenario: Inicio de sesión fallido con usuario bloqueado
     Given que el usuario está en la página de inicio de sesión
-    When ingresa el usuario "locked_out_user" y la contraseña "secret_sauce"
+    When ingresa el usuario "locked_out_user" y la contraseña configurada
     And presiona el botón de inicio de sesión
     Then debería visualizar el mensaje de error "Sorry, this user has been locked out"

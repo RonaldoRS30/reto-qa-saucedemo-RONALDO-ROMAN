@@ -12,6 +12,10 @@ When('ingresa el usuario {string} y la contraseña {string}', async function (th
     await this.loginPage!.enterCredentials(username, password);
 });
 
+When('ingresa el usuario {string} y la contraseña configurada', async function (this: CustomWorld, username: string) {
+    await this.loginPage!.enterCredentials(username, this.saucePassword());
+});
+
 When('presiona el botón de inicio de sesión', async function (this: CustomWorld) {
     await this.loginPage!.clickLogin();
 });

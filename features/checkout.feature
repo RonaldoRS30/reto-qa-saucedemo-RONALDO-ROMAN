@@ -3,7 +3,7 @@ Feature: Proceso de compra en Sauce Demo
 
   @smoke
   Scenario: Completar una compra exitosamente
-    Given que el usuario inicia sesión con "standard_user" y "secret_sauce"
+    Given que el usuario inicia sesión con "standard_user" y la contraseña configurada
     And agrega el producto "Sauce Labs Backpack" al carrito
     And ingresa al carrito de compras
     When inicia el proceso de compra
@@ -14,7 +14,7 @@ Feature: Proceso de compra en Sauce Demo
 
   @regresion
   Scenario: Intentar continuar sin completar los datos obligatorios
-    Given que el usuario inicia sesión con "standard_user" y "secret_sauce"
+    Given que el usuario inicia sesión con "standard_user" y la contraseña configurada
     And agrega el producto "Sauce Labs Backpack" al carrito
     And ingresa al carrito de compras
     When inicia el proceso de compra

@@ -26,6 +26,13 @@ export class CustomWorld extends World {
     constructor(options: IWorldOptions) {
         super(options);
         this.baseUrl = process.env.BASE_URL ?? '';
+    } 
+    saucePassword(): string {
+        const password = process.env.SAUCE_PASSWORD;
+        if (!password) {
+            throw new Error('Falta SAUCE_PASSWORD en el entorno');
+        }
+        return password;
     }
 }
 

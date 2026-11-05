@@ -14,6 +14,15 @@ Given('que el usuario inicia sesión con {string} y {string}', async function (t
     await this.productsPage.verifyProductsPage();
 });
 
+Given('que el usuario inicia sesión con {string} y la contraseña configurada', async function (this: CustomWorld, username: string) {
+    this.loginPage = new LoginPage(this.page, this.baseUrl);
+    await this.loginPage.navigate();
+    await this.loginPage.login(username, this.saucePassword());
+
+    this.productsPage = new ProductsPage(this.page);
+    await this.productsPage.verifyProductsPage();
+});
+
 When('agrega el producto {string} al carrito', async function (this: CustomWorld, productName: string) {
     await this.productsPage!.addProductToCart(productName);
 });
