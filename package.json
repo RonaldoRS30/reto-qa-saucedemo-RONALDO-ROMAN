@@ -10,6 +10,8 @@
     "test:login": "npm test -- --tags @login",
     "test:carrito": "npm test -- --tags @carrito",
     "test:checkout": "npm test -- --tags @checkout",
+    "test:positivo": "npm test -- --tags @positivo",
+    "test:negativo": "npm test -- --tags @negativo",
     "allure-generate": "allure generate allure-results --clean -o allure-report",
     "allure-open": "allure open allure-report"
   },

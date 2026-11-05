@@ -37,6 +37,8 @@ cp .env.example .env
 | `npm run test:login` | Solo `features/login.feature` |
 | `npm run test:carrito` | Solo `features/compra.feature` |
 | `npm run test:checkout` | Solo `features/checkout.feature` |
+| `npm run test:positivo` | Login exitoso, agregar, ver y quitar el producto, y compra completa |
+| `npm run test:negativo` | Outline y CSV de login fallido, y checkout sin datos |
 
 ## Allure
 

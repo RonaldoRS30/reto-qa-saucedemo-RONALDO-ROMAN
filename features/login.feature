@@ -1,14 +1,14 @@
 @login
 Feature: Inicio de sesión en Sauce Demo
 
-  @smoke
+  @smoke @positivo
   Scenario: Inicio de sesión exitoso con usuario estándar
     Given que el usuario está en la página de inicio de sesión
     When ingresa el usuario "standard_user" y la contraseña configurada
     And presiona el botón de inicio de sesión
     Then debería visualizar la página de productos
 
-  @regresion
+  @regresion @negativo
   Scenario Outline: Inicio de sesión fallido - <caso>
     Given que el usuario está en la página de inicio de sesión
     When ingresa el usuario "<usuario>" y la contraseña "<clave>"
@@ -23,7 +23,7 @@ Feature: Inicio de sesión en Sauce Demo
       | usuario vacío     |                  | configurada         | Username is required                 |
       | clave vacía       | standard_user    |                     | Password is required                 |
 
-  @regresion
+  @regresion @negativo
   Scenario: Login negativo con datos desde CSV
     Given que el usuario está en la página de inicio de sesión
     When intenta iniciar sesión con cada caso del archivo "login-negativo.csv"

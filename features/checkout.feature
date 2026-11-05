@@ -1,7 +1,7 @@
 @checkout
 Feature: Proceso de compra en Sauce Demo
 
-  @smoke
+  @smoke @positivo
   Scenario: Completar una compra exitosamente
     Given que el usuario inicia sesión con "standard_user" y la contraseña configurada
     And agrega el producto "Sauce Labs Backpack" al carrito
@@ -12,7 +12,7 @@ Feature: Proceso de compra en Sauce Demo
     And confirma la compra
     Then debería visualizar el mensaje de confirmación "Thank you for your order!"
 
-  @regresion
+  @regresion @negativo
   Scenario: Intentar continuar sin completar los datos obligatorios
     Given que el usuario inicia sesión con "standard_user" y la contraseña configurada
     And agrega el producto "Sauce Labs Backpack" al carrito

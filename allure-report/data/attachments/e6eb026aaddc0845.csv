@@ -1,0 +1,6 @@
+caso,usuario,clave,mensaje
+cred. incorrectas,usuario_invalido,password_incorrecta,Username and password do not match
+clave incorrecta,standard_user,clave_mala,Username and password do not match
+usuario bloqueado,locked_out_user,configurada,Sorry, this user has been locked out
+usuario vacío,,configurada,Username is required
+clave vacía,standard_user,,Password is required

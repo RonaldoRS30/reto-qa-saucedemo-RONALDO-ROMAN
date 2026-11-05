@@ -10,7 +10,7 @@ Camino feliz, tag `@smoke`: login con `standard_user` y la contraseña de `SAUCE
 
 Regresión, tag `@regresion`: un Scenario Outline de login y el mismo conjunto leído desde `data/login-negativo.csv`, más ver el carrito, quitar el producto y checkout sin nombre. El usuario bloqueado sigue en el outline porque el reto lo pide.
 
-`@login`, `@carrito` y `@checkout` van una sola vez, arriba de cada feature.
+`@login`, `@carrito` y `@checkout` van una sola vez, arriba de cada feature. `@positivo` marca el caso que la aplicación acepta. `@negativo` marca el que la aplicación rechaza y muestra un error.
 
 Quedó afuera ordenar el inventario, comprar varios productos y el logout.
 
