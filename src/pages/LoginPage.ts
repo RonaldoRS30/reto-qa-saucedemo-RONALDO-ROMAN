@@ -9,6 +9,9 @@ export default class LoginPage {
     private readonly loginButton: Locator;
     readonly errorMessage: Locator;
 
+    private typedUsername = '';
+    private typedPassword = '';
+
     constructor(page: Page, baseUrl: string) {
         this.page = page;
         this.baseUrl = baseUrl;
@@ -24,12 +27,35 @@ export default class LoginPage {
     }
 
     async enterCredentials(username: string, password: string): Promise<void> {
-        await this.usernameInput.fill(username);
-        await this.passwordInput.fill(password);
+        this.typedUsername = username;
+        this.typedPassword = password;
+        await this.writeCredentials();
     }
 
     async clickLogin(): Promise<void> {
+        await this.writeCredentials();
         await this.loginButton.click();
+    }
+
+    private async writeCredentials(): Promise<void> {
+        await this.writeInput(this.usernameInput, this.typedUsername);
+        await this.writeInput(this.passwordInput, this.typedPassword);
+        if (this.typedUsername === '') {
+            await this.writeInput(this.usernameInput, '');
+        }
+        if (this.typedPassword === '') {
+            await this.writeInput(this.passwordInput, '');
+        }
+    }
+
+    private async writeInput(input: Locator, value: string): Promise<void> {
+        await input.fill(value);
+        await input.evaluate((element, next: string) => {
+            const field = element as HTMLInputElement;
+            const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set;
+            setter?.call(field, next);
+            field.dispatchEvent(new Event('input', { bubbles: true }));
+        }, value);
     }
 
     async login(username: string, password: string): Promise<void> {
